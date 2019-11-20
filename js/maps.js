@@ -3,7 +3,6 @@
 var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 var labelIndex = 0;
 var addListenerHandler;
-var GOOGLE;
 
 class RemindMap {
     /**
@@ -13,9 +12,10 @@ class RemindMap {
     constructor(map_id) {
         // TODO: Initialize to current location
         let location = { lat: 62.60, lng: 29.76 };
-        this.map = new GOOGLE.maps.Map(document.getElementById(map_id), {
+        this.map = new google.maps.Map(document.getElementById(map_id), {
             zoom: 12,
-            center: location
+            center: location,
+            disableDefaultUI: true
         });
     }
 
@@ -27,7 +27,7 @@ class RemindMap {
     addMarker(location) {
         // Add the marker at the clicked location, and add the next-available label
         // from the array of alphabetical characters.
-        let marker = new GOOGLE.maps.Marker({
+        let marker = new google.maps.Marker({
             position: location,
             label: labels[labelIndex++ % labels.length],
             map: this.map

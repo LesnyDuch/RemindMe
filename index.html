@@ -26,9 +26,6 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 
-    <!-- Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=API_KEYg&callback=initialize" async defer></script>
-
     <!-- Sidebar Source: https://www.codeply.com/p/esYgHWB2zJ -->
 
     <!-- CUSTOM SCRIPTS -->
@@ -38,11 +35,12 @@
 
     <script>
         var MAP;
-
+        function initialize() {
+            MAP = new RemindMap('map');
+            GOOGLE = google;
+        };
 
         $(document).ready(function () {
-            GOOGLE = google;
-            MAP = new RemindMap('map');
             $('[data-toggle=offcanvas]').click(function () {
                 $('.row-offcanvas').toggleClass('active');
                 $('#map').toggleClass('active');
@@ -51,8 +49,10 @@
         });
 
 
-
     </script>
+
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initialize" async defer></script>
 </head>
 
 <body>
@@ -78,10 +78,10 @@
         <div class="row row-offcanvas row-offcanvas-left">
             <!-- sidebar -->
             <div class="sidebar-offcanvas" id="sidebar" role="navigation">
-                <h3 onclick="addNote()">Add</h3>
             </div>
             <!-- main area -->
-            <div id="map"> </div><!-- /.col-xs-12 main -->
+            <div id="map">
+            </div><!-- /.col-xs-12 main -->
         </div>
         <!--/.row-->
 
