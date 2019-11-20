@@ -1,0 +1,10 @@
+.note-card {
+    padding: 1.5em;
+    margin: 10px 10px 10px 10px;
+    box-shadow: 3px 3px 8px  #888888;
+}
+
+.note-card p {
+    font-size: 0.8em;
+}
+
