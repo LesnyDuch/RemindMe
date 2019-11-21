@@ -27,6 +27,31 @@
         crossorigin="anonymous"></script>
 
     <!-- Sidebar Source: https://www.codeply.com/p/esYgHWB2zJ -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.4.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+        
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.4.0/firebase-analytics.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyCJDW9ATgtM_oiVEmJdbXU2AaXDidfxIV4",
+        authDomain: "lamad-remindme.firebaseapp.com",
+        databaseURL: "https://lamad-remindme.firebaseio.com",
+        projectId: "lamad-remindme",
+        storageBucket: "lamad-remindme.appspot.com",
+        messagingSenderId: "906057919841",
+        appId: "1:906057919841:web:384fc5372f03ea9ca1e920",
+        measurementId: "G-RTWDN5HJPH"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
 
     <!-- CUSTOM SCRIPTS -->
     <script src="js/frontend.js"></script>
@@ -52,10 +77,11 @@
     </script>
 
     <!-- Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=KEY&callback=initialize" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA0U_zPscvuSPiAs3eRYVT5NjiH4xOj2bY&callback=initialize" async defer></script>
 </head>
 
 <body>
+    
     <div class="page-container">
         <!-- top navbar -->
         <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -71,7 +97,7 @@
                 </div>
             </div>
             <div class="navbar-right">
-                <div><img src="./images/avatar.png" alt="user"/>
+                <div><button id="login-btn" onclick="loginGoogle()">Login</button><!--<img id="menu" src="./images/avatar.png" alt="user"/>-->
                 </div>
             </div>
         </div>
