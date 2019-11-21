@@ -1,8 +1,7 @@
 const SIDEBAR_ID = '#sidebar';
 const NOTE_CLASS = 'note-card'
 // TEMPORARY test data
-var NOTES = [
-]
+var NOTES = []
 
 /**
  * Find note by its ID.
@@ -30,7 +29,7 @@ var updateNote = function (notes, noteId, text) {
     let id = findNote(notes, noteId);
     notes[id].text = text;
     // TODO: Update database;
-    // dbUpdateNote(id, text)
+    dbUpdateNote(uid, noteId, text, notes[id].dbID)
 }
 
 
@@ -58,7 +57,8 @@ var removeNote = function (notes, noteId) {
     note.classList.add('collapsed');
     setTimeout(function () { document.getElementById(noteId).remove() }, 400);
     // TODO: Remove from DB
-    // dbRemoveNote(noteId)
+    let id = findNote(notes, noteId);
+    dbRemoveNote(uid, noteId, notes[id].dbID)
     // Remove from local registry
     notes.splice(findNote(notes, noteId), 1);
     // Remove the marker from the map

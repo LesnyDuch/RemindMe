@@ -4,9 +4,10 @@
 }
 
 .navbar-toggle {
-  background-image: url('https://mdbootstrap.com/img/svg/hamburger2.svg?color=777');
+  background-image: url('../images/menu.png');
   background-repeat: no-repeat;
   padding: 0px !important;
+  cursor:pointer;
 }
 
 .navbar-right img{

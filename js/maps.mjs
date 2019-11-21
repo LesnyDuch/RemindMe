@@ -144,7 +144,9 @@ class RemindMap {
                         // Push the note to the local registry
                         notes.push(newNote);
                         // TODO: Add Push to db
-                        // dbNotePush()
+                        console.log('uid:', uid, ' email:', email);
+                        newNote.dbID = dbNotePush(uid, newNote.id_, /*event.latLng,*/ newNote.locationTitle, newNote.text)
+                        console.log(newNote)
                         // Redraw the notes using the local registry
                         redrawNotes(notes);
                         // The add button is no longer highlighted
