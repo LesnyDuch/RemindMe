@@ -4,7 +4,9 @@
     box-shadow: 3px 3px 8px  #888888;
 }
 
-.note-card p {
+.note-card textarea {
     font-size: 0.8em;
+    resize: none;
+    width : 100%;   
 }
 

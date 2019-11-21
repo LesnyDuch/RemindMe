@@ -7,21 +7,48 @@ var addListenerHandler;
 class RemindMap {
     /**
      * Initializes the Google Map object.
-     * @param map_id    HTML id value of the div, where the map is  
+     * @param {*} map_id HTML id value of the div, where the map is  
      */
     constructor(map_id) {
         // TODO: Initialize to current location
         let location = { lat: 62.60, lng: 29.76 };
-        this.map = new google.maps.Map(document.getElementById(map_id), {
+        var map = new google.maps.Map(document.getElementById(map_id), {
             zoom: 12,
             center: location,
             disableDefaultUI: true
         });
+
+        // Taken from Docs
+        let handleLocationError = function (browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(map);
+        }
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+
+                console.log('Location found');
+                map.setCenter(pos);
+            }, function () {
+                handleLocationError(true, infoWindow, this.map.getCenter());
+            });
+        } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, this.map.getCenter());
+        }
+        this.map = map;
     }
 
     /** Adds a marker to the map.
-     * @param location Location returned by the calling event handler
-     * @param map Map object
+     * @param {*} location Location returned by the calling event handler
+     * @param {*} map Map object
      * @returns Information about the Marker and location
      */
     addMarker(location) {
