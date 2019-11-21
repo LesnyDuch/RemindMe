@@ -1,13 +1,14 @@
 function loginGoogle(){
     if(!firebase.auth().currentUser){
         var provider = new firebase.auth.GoogleAuthProvider();
-        provider.addScope("https:googleapis.com/auth/plus.login");
+        provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
         console.log("I'm here");
         firebase.auth().signInWithPopup(provider).then(function(result) {
             console.log("I'm inside popup function")
             // This gives you a Google Access Token. You can use it to access the Google API.
             var token = result.credential.accessToken;
             var user = result.user;
+            console.log(user);
           }).catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
