@@ -27,6 +27,24 @@
         crossorigin="anonymous"></script>
 
     <!-- Sidebar Source: https://www.codeply.com/p/esYgHWB2zJ -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.4.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+        
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.4.0/firebase-analytics.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        //TO COPY HERE!!
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
 
     <!-- CUSTOM SCRIPTS -->
     <script src="js/frontend.js"></script>
@@ -56,6 +74,7 @@
 </head>
 
 <body>
+    
     <div class="page-container">
         <!-- top navbar -->
         <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -67,10 +86,12 @@
             <div class="navbar-center">
                 <div class="navbar-header">
                     <span class="navbar-brand" href="#">RemindMe</span>
+                    
                 </div>
             </div>
             <div class="navbar-right">
-
+                <div><img id="login-btn" onclick="loginGoogle()" src="./images/avatar.png" alt="user"/>
+                </div>
             </div>
         </div>
 
