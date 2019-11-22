@@ -4,9 +4,44 @@
     box-shadow: 3px 3px 8px  #888888;
 }
 
+.note-card, .note-card * {
+    max-height: 1000px;
+    -webkit-transition: max-height 0.4s; 
+    -moz-transition: max-height 0.4s; 
+    -ms-transition: max-height 0.4s; 
+    -o-transition: max-height 0.4s; 
+    transition: max-height 0.4s;
+}
+
+.note-card.collapsed, .note-card *.collapsed {
+    /* Collapsing animation https://codepen.io/davidcochran/pen/RNOOEO */
+    max-height: 0;
+}
+
+.note-card h5 {
+    display: inline-block;
+    font-size: 1rem;
+    overflow-wrap: anywhere;
+    max-height: inherit;
+}
+
+
+.note-card button {
+    float: right;
+}
+
 .note-card textarea {
     font-size: 0.8em;
     resize: none;
-    width : 100%;   
+    width : 100%;
+
+    background-color: inherit;
+    border: none;
+}
+
+@media screen and (max-width:1100px) {
+    .note-card h5 {
+        font-size: 0.9rem;
+    }
 }
 
