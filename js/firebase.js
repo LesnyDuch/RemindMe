@@ -7,11 +7,14 @@ function loginGoogle(){
     if(!firebase.auth().currentUser){
         var provider = new firebase.auth.GoogleAuthProvider();
         provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
+        console.log('Before Popup');
         firebase.auth().signInWithPopup(provider).then(function(result) {
             // This gives you a Google Access Token. You can use it to access the Google API.
             var token = result.credential.accessToken;
             var user = result.user;
+            console.log('After popup');
             console.log(user);
+            alert('You have successfully logged in');
           }).catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
@@ -23,6 +26,10 @@ function loginGoogle(){
 
         });
     }else{
-        firebase.auth().signOut();
+        firebase.auth().signOut().then(function(result){
+            alert('You have successfully logged out');
+        }).catch(function(error) {
+    
+        });
     }
 }
