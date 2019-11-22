@@ -86,11 +86,11 @@ class RemindMap {
                 var latLng = event.latLng;
                 let service = new google.maps.places.PlacesService(map);
                 let request = {
-                    'radius': 50,
+                    'radius': 100,
                     'location': latLng,
                     'fields': ['name', 'formatted_address']
                 }
-
+                // Find the location's name
                 service.nearbySearch(request, function (results, status) {
                     if (status == google.maps.places.PlacesServiceStatus.OK) {
                         let placeName = results[0]['name'];
@@ -98,7 +98,7 @@ class RemindMap {
                             'id_': uuidv4(),
                             'location': event.latLng,
                             'locationTitle': placeName,
-                            'text': "Enter text here..."
+                            'text': ""
                         };
                         // Add the marker to the MAP
                         addMarker(event.latLng, map, notes);
@@ -108,6 +108,14 @@ class RemindMap {
                         // dbNotePush()
                         // Redraw the notes using the local registry
                         redrawNotes(notes);
+                        // Open the sidbar, if it's not open
+                        try {
+                            document.getElementsByClassName('navbar-toggle')[0].click()
+                        } catch (error) {
+                            true;
+                        }
+                        // Change focus to the new note
+                        focusNote(newNote.id_);
                     }
                     else {
                         console.log(status)

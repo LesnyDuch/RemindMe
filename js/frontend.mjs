@@ -23,12 +23,30 @@ var NOTES = [
 ]
 
 /**
+ * Find note by its ID.
+ * @param notes Array of notes objects.
+ * @param noteId The ID of the note to be found.
+ * @returns The index of the note in the notes array.
+ */
+var findNote = function (notes, noteId) {
+    let id;
+    for (let i = 0; i < notes.length; i++) {
+        if (notes[i].id_ == noteId) {
+            id = i;
+        }
+    }
+    return id;
+}
+
+/**
  * Update a note's information in the database.
  * @param {*} noteId The note's id in the db.
  * @param {*} text Text of the note to be updated.
  */
-var updateNote = function (noteId, text) {
+var updateNote = function (notes, noteId, text) {
     console.log('Updating note ' + noteId);
+    let id = findNote(notes, noteId);
+    notes[id].text = text;
     // TODO: Update database;
     // dbUpdateNote(id, text)
 }
@@ -46,19 +64,29 @@ var resizeNote = function (element) {
 
 /**
  * Removes a note from the DOM tree and sends a delete request to the DB.
+ * @param {*} notes List of notes objects.
  * @param {*} noteId Note's ID.
  */
-var removeNote = function (noteId) {
+var removeNote = function (notes, noteId) {
     // Collapse the element, then delete it
     note = document.getElementById(noteId);
     for (c of note.querySelectorAll('h5, button, textarea')) {
         c.classList.add('collapsed');
     }
     note.classList.add('collapsed');
-
     setTimeout(function () { document.getElementById(noteId).remove() }, 400);
     // TODO: Remove from DB
     // dbRemoveNote(noteId)
+    // Remove from local registry
+    notes.splice(findNote(notes, noteId), 1);
+}
+
+/**
+ * Sets the focus on a given note.
+ * @param id Id of the note.
+ */
+var focusNote = function (id) {
+    $(`#${id} textarea`).focus()
 }
 
 /**
@@ -71,6 +99,10 @@ var centerNote = function (lat, lng, map) {
     map.map.setCenter({ 'lat': lat, 'lng': lng });
 }
 
+/**
+ * Deletes and redraws all notes in the DOM tree.
+ * @param notes List of notes.
+ */
 var redrawNotes = function (notes) {
     document.getElementById('sidebar').innerHTML = "";
     drawNotes(notes);
@@ -86,22 +118,25 @@ var drawNotes = function (notes) {
             `
             <div class="${NOTE_CLASS}" id="${n.id_}">
                 <button type="button" class="close" aria-label="Close"
-                    onclick='removeNote(this.parentElement.id)'>
+                    onclick='removeNote(NOTES, this.parentElement.id)'>
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <h5 onclick='centerNote(${n.location.lat}, ${n.location.lng}, MAP)'>${n.locationTitle}</h5>
                 <textarea 
                     oninput='resizeNote(this)'
                     onresize='resizeNote(this)'
-                    onfocusout='updateNote(this.parentElement.id, this.value);'
+                    onfocusout='updateNote(NOTES, this.parentElement.id, this.value);'
                     placeholder="Enter a note...">${n.text}</textarea>
             </div>
             `
         )
     }
+    // Change initial textarea size, a slight wait is necessary for the page to load
+    // correctly the first time
+    setTimeout(() => {
+        $("textarea").each(function () {
+            resizeNote(this);
+        });
+    }, 100)
 
-    // Change initial textarea size
-    $("textarea").each(function () {
-        resizeNote(this);
-    });
 }

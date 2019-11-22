@@ -65,7 +65,6 @@
                 $('.row-offcanvas').toggleClass('active');
                 $('#map').toggleClass('active');
             });
-
             // TODO: Add loading of notes from db
             drawNotes(NOTES);
         });
@@ -74,8 +73,9 @@
     </script>
 
     <!-- Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initialize&libraries=places" async
-        defer></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFNy4kfXm-skMaqz8CsiZJ3gu-8BZiaqg&callback=initialize&libraries=places"
+        async defer></script>
 </head>
 
 <body>
@@ -84,7 +84,8 @@
         <!-- top navbar -->
         <div class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="navbar-left">
-                <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".sidebar-nav">
+                <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".sidebar-nav"
+                    onclick="google.maps.event.removeListener(addListenerHandler);">
                     Toggle
                 </button>
             </div>
