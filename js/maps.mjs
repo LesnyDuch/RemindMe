@@ -109,11 +109,8 @@ class RemindMap {
                         // Redraw the notes using the local registry
                         redrawNotes(notes);
                         // Open the sidbar, if it's not open
-                        try {
-                            document.getElementsByClassName('navbar-toggle')[0].click()
-                        } catch (error) {
-                            true;
-                        }
+                        $('#main').addClass('active');
+                        $('#map').addClass('active');
                         // Change focus to the new note
                         focusNote(newNote.id_);
                     }

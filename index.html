@@ -58,6 +58,11 @@
             MAP = new RemindMap('map');
             GOOGLE = google;
             document.getElementById('brand').addEventListener('click', () => { MAP.addNote(NOTES) })
+            // On narrow screens, this will close the sidebar, if the map is clicked
+            document.getElementById('map').addEventListener('click', () => {
+                $('#main').removeClass('active');
+                $('#map').removeClass('active');
+            })
         };
 
         $(document).ready(function () {
@@ -102,7 +107,7 @@
         </div>
 
 
-        <div class="row row-offcanvas row-offcanvas-left">
+        <div id="main" class="row row-offcanvas row-offcanvas-left">
             <!-- sidebar -->
             <div class="sidebar-offcanvas" id="sidebar" role="navigation">
             </div>
