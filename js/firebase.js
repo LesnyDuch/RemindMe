@@ -1,10 +1,13 @@
+/*Sign in auth:
+Function that if you are not logged, on click into the icon a google popup will appeard and we will save
+the data of the user in the var user. Also we catch the errors.
+Docu: https://firebase.google.com/docs/auth/web/google-signin 
+*/
 function loginGoogle(){
     if(!firebase.auth().currentUser){
         var provider = new firebase.auth.GoogleAuthProvider();
         provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
-        console.log("I'm here");
         firebase.auth().signInWithPopup(provider).then(function(result) {
-            console.log("I'm inside popup function")
             // This gives you a Google Access Token. You can use it to access the Google API.
             var token = result.credential.accessToken;
             var user = result.user;
