@@ -11,6 +11,12 @@
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/card-style.css">
+    <link rel="stylesheet" href="css/btn-add-style.css">
+
+    <!-- CUSTOM SCRIPTS -->
+    <script src="js/frontend.mjs"></script>
+    <script src="js/maps.mjs"></script>
+    <script src="js/firebase.mjs"></script>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -32,31 +38,37 @@
 
     <!-- TODO: Add SDKs for Firebase products that you want to use
         https://firebase.google.com/docs/web/setup#available-libraries -->
-        
+
     <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.4.0/firebase-analytics.js"></script>
 
     <script>
-      // Your web app's Firebase configuration
-      var firebaseConfig = {
-        //TO COPY HERE!!
-        
-      };
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      firebase.analytics();
-    </script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            //TO COPY HERE!!
 
-    <!-- CUSTOM SCRIPTS -->
-    <script src="js/frontend.js"></script>
-    <script src="js/maps.js"></script>
-    <script src="js/firebase.js"></script>
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
 
     <script>
         var MAP;
         function initialize() {
             MAP = new RemindMap('map');
             GOOGLE = google;
+            document.getElementById('btn-add').addEventListener('click', () => { MAP.addNote(NOTES) })
+            // On narrow screens, this will close the sidebar, if the map is clicked
+            document.getElementById('map').addEventListener('click', () => {
+                $('#main').removeClass('active');
+                $('#map').removeClass('active');
+            });
+            // This interval will check the current location every 5 seconds and redraw a circle in the map
+            // At the same time it iterates through notes and checks if they are in range and highlights them
+            setInterval(() => {
+                MAP.onUpdateLocation(NOTES);
+            }, 5000);
         };
 
         $(document).ready(function () {
@@ -64,47 +76,54 @@
                 $('.row-offcanvas').toggleClass('active');
                 $('#map').toggleClass('active');
             });
-            drawNotes();
+            // TODO: Add loading of notes from db
+            drawNotes(NOTES);
+            // Resize the content of the page to respect the navbar
+            $('#main').height($(window).height() - 56)
+
         });
-
-
     </script>
 
     <!-- Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initialize" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initialize&libraries=places,geometry"
+        async defer></script>
 </head>
 
 <body>
-    
+
     <div class="page-container">
         <!-- top navbar -->
         <div class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="navbar-left">
-                <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".sidebar-nav">
+                <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".sidebar-nav"
+                    onclick="google.maps.event.removeListener(addListenerHandler);">
                     Toggle
                 </button>
+                <span id="nearby-count" class="badge badge-pill badge-danger">0</span>
             </div>
             <div class="navbar-center">
                 <div class="navbar-header">
-                    <span class="navbar-brand" href="#">RemindMe</span>
-                    
+                    <span class="navbar-brand" id="brand">RemindMe</span>
                 </div>
             </div>
             <div class="navbar-right">
                 <div class="navbar-login">
-                    <img id="login-btn" onclick="loginGoogle()" src="./images/avatar.png" alt="user"/>
+                    <img id="login-btn" onclick="loginGoogle()" src="./images/avatar.png" alt="user" />
                 </div>
             </div>
         </div>
 
 
-        <div class="row row-offcanvas row-offcanvas-left">
+        <div id="main" class="row row-offcanvas row-offcanvas-left">
             <!-- sidebar -->
             <div class="sidebar-offcanvas" id="sidebar" role="navigation">
             </div>
             <!-- main area -->
             <div id="map">
             </div><!-- /.col-xs-12 main -->
+            <div id='btn-add'>
+                <h1>+</h1>
+            </div>
         </div>
         <!--/.row-->
 
