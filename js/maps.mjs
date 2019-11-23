@@ -80,6 +80,7 @@ class RemindMap {
         var map = this.map;
         // Disable the event listener in case it was activated before
         google.maps.event.removeListener(addListenerHandler);
+        $('#btn-add').addClass('active');
         // This event listener calls addMarker() when the map is clicked.
         addListenerHandler = google.maps.event.addListener(map, 'click',
             function (event) {
@@ -111,6 +112,7 @@ class RemindMap {
                         // Open the sidbar, if it's not open
                         $('#main').addClass('active');
                         $('#map').addClass('active');
+                        $('#btn-add').removeClass('active');
                         // Change focus to the new note
                         focusNote(newNote.id_);
                     }

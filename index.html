@@ -11,6 +11,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/card-style.css">
+    <link rel="stylesheet" href="css/btn-add-style.css">
 
     <!-- CUSTOM SCRIPTS -->
     <script src="js/frontend.mjs"></script>
@@ -57,7 +58,7 @@
         function initialize() {
             MAP = new RemindMap('map');
             GOOGLE = google;
-            document.getElementById('brand').addEventListener('click', () => { MAP.addNote(NOTES) })
+            document.getElementById('btn-add').addEventListener('click', () => { MAP.addNote(NOTES) })
             // On narrow screens, this will close the sidebar, if the map is clicked
             document.getElementById('map').addEventListener('click', () => {
                 $('#main').removeClass('active');
@@ -72,15 +73,17 @@
             });
             // TODO: Add loading of notes from db
             drawNotes(NOTES);
+            // Resize the content of the page to respect the navbar
+            $('#main').height($(window).height() - 56)
+
         });
 
 
     </script>
 
     <!-- Google Maps API -->
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFNy4kfXm-skMaqz8CsiZJ3gu-8BZiaqg&callback=initialize&libraries=places"
-        async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initialize&libraries=places" async
+        defer></script>
 </head>
 
 <body>
@@ -114,6 +117,9 @@
             <!-- main area -->
             <div id="map">
             </div><!-- /.col-xs-12 main -->
+            <div id='btn-add'>
+                <h1>+</h1>
+            </div>
         </div>
         <!--/.row-->
 

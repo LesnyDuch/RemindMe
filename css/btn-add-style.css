@@ -1,0 +1,27 @@
+#btn-add {
+    border-radius: 50%;
+    background-color: #f8f8f8;
+    box-shadow: 2px 2px 8px #888888;
+    z-index: 10;
+
+    width: 4em;
+    height: 4em;
+
+    position: absolute;
+    right: 2em;
+    bottom: 3em;
+
+    text-align: center;
+}
+
+#btn-add h1 {
+    font-size: 3.3em;
+}
+
+#btn-add:hover {
+    cursor: pointer;
+}
+
+#btn-add.active {
+    background-color: #5edd5e;
+}
