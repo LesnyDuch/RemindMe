@@ -63,7 +63,12 @@
             document.getElementById('map').addEventListener('click', () => {
                 $('#main').removeClass('active');
                 $('#map').removeClass('active');
-            })
+            });
+            // This interval will check the current location every 5 seconds and redraw a circle in the map
+            // At the same time it iterates through notes and checks if they are in range and highlights them
+            setInterval(() => {
+                MAP.onUpdateLocation(NOTES);
+            }, 5000);
         };
 
         $(document).ready(function () {
@@ -77,13 +82,11 @@
             $('#main').height($(window).height() - 56)
 
         });
-
-
     </script>
 
     <!-- Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initialize&libraries=places" async
-        defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initialize&libraries=places,geometry"
+        async defer></script>
 </head>
 
 <body>
@@ -96,6 +99,7 @@
                     onclick="google.maps.event.removeListener(addListenerHandler);">
                     Toggle
                 </button>
+                <span id="nearby-count" class="badge badge-pill badge-danger">0</span>
             </div>
             <div class="navbar-center">
                 <div class="navbar-header">

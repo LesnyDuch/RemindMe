@@ -86,6 +86,10 @@ var removeNote = function (notes, noteId) {
  * @param id Id of the note.
  */
 var focusNote = function (id) {
+    // Open the sidbar, if it's not open
+    $('#main').addClass('active');
+    $('#map').addClass('active');
+    // Set focus on the note
     $(`#${id} textarea`).focus()
 }
 

@@ -23,6 +23,7 @@
     font-size: 1rem;
     overflow-wrap: anywhere;
     max-height: inherit;
+    cursor: pointer;
 }
 
 
@@ -37,6 +38,10 @@
 
     background-color: inherit;
     border: none;
+}
+
+.note-card.highlighted {
+    background-color: #5edd5e;
 }
 
 @media screen and (max-width:1100px) {

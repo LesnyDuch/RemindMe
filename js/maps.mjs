@@ -5,6 +5,10 @@ var labelIndex = 0;
 var addListenerHandler;
 // We have to use this to extract the value from the call back I guess
 var placeName;
+// Stores current position
+var POSITION = { 'lat': 62.60, 'lng': 29.76 };
+// The radius, in which we consider the markers to be nearby
+const RADIUS = 100;
 
 /**
  * Generates random UUID for the database entries.
@@ -19,7 +23,7 @@ var uuidv4 = () => {
 class RemindMap {
     /**
      * Initializes the Google Map object.
-     * @param {*} map_id HTML id value of the div, where the map is  
+     * @param {*} map_id HTML id value of the div, where the map is. 
      */
     constructor(map_id) {
         // TODO: Initialize to current location
@@ -29,29 +33,55 @@ class RemindMap {
             center: location,
             disableDefaultUI: true
         });
+        this.map = map;
+        this.setLocation(true);
+    }
 
+    /**
+     * Using HTML5 geolocation functionality, sets the current position and centers
+     * the map onto it.
+     */
+    setLocation(centerMap = false) {
+        var map = this.map;
         // Taken from Docs
-        let handleLocationError = function () {
+        let handleLocationError = () => {
             console.log('Location error occured.')
         }
+
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
-                var pos = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                };
-
-                console.log('Location found');
-                map.setCenter(pos);
-            }, function () {
-                handleLocationError();
-            });
+                POSITION = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                if (centerMap)
+                    map.setCenter(POSITION);
+            }, handleLocationError);
         } else {
             // Browser doesn't support Geolocation
             handleLocationError();
         }
-        this.map = map;
+    }
+
+    /**
+     * Updates the location of the user and highlights notes if they are nearby.
+     * @param notes List of notes objects.
+     */
+    onUpdateLocation(notes) {
+        let count = 0;
+        // Calculates distance between two points
+        let dist = google.maps.geometry.spherical.computeDistanceBetween;
+        this.setLocation();
+        for (let n of notes) {
+            console.log(n.location);
+            // Check if a note is in the radius
+            if (dist(POSITION, n.location) <= RADIUS) {
+                $(`#${n.id_}`).addClass('highlighted');
+                count++;
+            } else {
+                $(`#${n.id_}`).removeClass('highlighted');
+            }
+        }
+        // Set the number of nearby markers.
+        $('#nearby-count').html(count);
     }
 
     /** Adds a marker to the map.
@@ -59,14 +89,16 @@ class RemindMap {
      * @param {*} map Map object
      * @returns Information about the Marker and location
      */
-    addMarker(location, map, notes) {
+    addMarker(location, map, id) {
         // Add the marker at the clicked location, and add the next-available label
         // from the array of alphabetical characters.
         let marker = new google.maps.Marker({
             position: location,
             label: labels[labelIndex++ % labels.length],
-            map: map
+            map: map,
+            animation: google.maps.Animation.DROP
         });
+        google.maps.event.addListener(marker, 'click', () => { focusNote(id) });
         // Disable the event listener
         google.maps.event.removeListener(addListenerHandler);
     }
@@ -102,16 +134,13 @@ class RemindMap {
                             'text': ""
                         };
                         // Add the marker to the MAP
-                        addMarker(event.latLng, map, notes);
+                        addMarker(event.latLng, map, newNote.id_);
                         // Push the note to the local registry
                         notes.push(newNote);
                         // TODO: Add Push to db
                         // dbNotePush()
                         // Redraw the notes using the local registry
                         redrawNotes(notes);
-                        // Open the sidbar, if it's not open
-                        $('#main').addClass('active');
-                        $('#map').addClass('active');
                         $('#btn-add').removeClass('active');
                         // Change focus to the new note
                         focusNote(newNote.id_);
