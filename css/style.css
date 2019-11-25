@@ -7,16 +7,6 @@
     z-index: 10;
 }
 
-#nearby-count {
-  margin-left: 0.2em;
-}
-
-.navbar-brand {
-  position: absolute;
-  left: 43vw;
-  top: 4px;
-}
-
 body {
     overflow:hidden
     }
@@ -61,7 +51,6 @@ body {
   
   .navbar-toggle {
     visibility: hidden;
-    width: 0px;
     }
 
   #map {
@@ -84,11 +73,6 @@ body {
   @media screen and (max-width:900px) {
     .navbar-toggle {
         visibility: visible;
-        width: auto;
-    }
-
-    .navbar-brand {
-      left: 35vw;
     }
 
     .row-offcanvas {
@@ -132,8 +116,4 @@ body {
     }
   }
   
-  @media screen and (max-width:1100px) {
-    #sidebar {
-      width: 35vw;
-    }
-}
+  
