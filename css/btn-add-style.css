@@ -23,5 +23,6 @@
 }
 
 #btn-add.active {
-    background-color: #5edd5e;
+    background-color: #dc3545;
+    color: white;
 }

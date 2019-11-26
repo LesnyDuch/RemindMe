@@ -154,10 +154,11 @@ class RemindMap {
                         addMarker(event.latLng, map, newNote.id_);
                         // Push the note to the local registry
                         notes.push(newNote);
-                        newNote.dbID = dbNotePush(uid, newNote.id_, latLng, newNote.locationTitle, newNote.text)
+                        // TODO: Add Push to db
+                        newNote.dbID = dbNotePush(uid, newNote.id_, /*event.latLng,*/ newNote.locationTitle, newNote.text)
                         // Redraw the notes using the local registry
                         redrawNotes(notes);
-                        updateNearby(notes);
+
                         // The add button is no longer highlighted
                         $('#btn-add').removeClass('active');
                         // Change focus to the new note

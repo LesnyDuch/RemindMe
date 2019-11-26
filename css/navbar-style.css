@@ -15,6 +15,9 @@
   height: 30px;
   cursor: pointer;
 }
+.navbar-right img:hover{
+  opacity: 0.8;
+}
 
 .navbar-toggle {
   visibility: hidden;

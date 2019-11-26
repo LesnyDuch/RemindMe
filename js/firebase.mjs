@@ -75,3 +75,19 @@ function dbRemoveNote(uid, noteId, dbID) {
     db.ref("/user" + uid).child(dbID).remove();
 
 }
+
+/*Load the data that is stored in /useruid ans save the values of the childs of this root into the
+* var data which contains {locationTitle: "...", location: "...", noteId: "..", text: "", uid: "..."}
+* Documentation: https://firebase.google.com/docs/database/web/lists-of-data
+*/
+function loadNotes(uid) {
+    var userNotes = db.ref('user' + uid);
+    userNotes.once('value').then(function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+            var data = childSnapshot.val();
+            console.log(data);
+            return (data);
+        })
+    })
+
+}
