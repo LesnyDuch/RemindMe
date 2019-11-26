@@ -13,9 +13,11 @@
 
     text-align: center;
 }
-
-#btn-center h1 {
-    font-size: 3.3em;
+#btn-center img{
+    
+    width:3em;
+    height:3em;
+    margin-top: 8px;
 }
 
 #btn-center:hover {

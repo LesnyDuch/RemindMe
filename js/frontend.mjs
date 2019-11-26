@@ -31,6 +31,7 @@ var updateNote = function (notes, noteId, text) {
     notes[id].text = text;
     // TODO: Update database;
     dbUpdateNote(uid, noteId, text, notes[id].dbID)
+
 }
 
 
@@ -147,5 +148,7 @@ var drawNotes = function (notes) {
             resizeNote(this);
         });
     }, 100)
+
+
 
 }

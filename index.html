@@ -57,12 +57,11 @@
         firebase.analytics();
         //Create db server:
         var db = firebase.database();
-        var dbref = firebase.database().ref().child('user');
     </script>
 
     <script>
         var MAP;
-        var NOTES = [];
+
 
         function initialize() {
             MAP = new RemindMap('map');
@@ -139,9 +138,10 @@
             <!-- main area -->
             <div id="map">
             </div>
-            <div id='btn-center'>
-                <h1>·</h1>
+            <div id="btn-center">
+                <img src="./images/center.png" />
             </div>
+
         </div><!-- /.col-xs-12 main -->
         <div id='btn-add'>
             <h1>+</h1>
