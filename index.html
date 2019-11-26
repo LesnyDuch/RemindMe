@@ -42,8 +42,9 @@
     <!-- TODO: Add SDKs for Firebase products that you want to use
         https://firebase.google.com/docs/web/setup#available-libraries -->
 
-    <!-- <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.4.0/firebase-analytics.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.4.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
 
     <script>
         // Your web app's Firebase configuration
@@ -52,8 +53,11 @@
 
         };
         // Initialize Firebase
-        // firebase.initializeApp(firebaseConfig);
-        // firebase.analytics();
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+        //Create db server:
+        var db = firebase.database();
+        var dbref = firebase.database().ref().child('user');
     </script>
 
     <script>
@@ -103,7 +107,7 @@
     </script>
 
     <!-- Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=API_KEYg&callback=initialize&libraries=places,geometry"
+    <script src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initialize&libraries=places,geometry"
         async defer></script>
 </head>
 
@@ -114,10 +118,9 @@
         <!-- top navbar -->
         <div class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="navbar-left">
-                <button class="btn navbar-toggle" data-toggle="offcanvas" data-target=".sidebar-nav"
-                    onclick="google.maps.event.removeListener(addListenerHandler);">
-                    <span> </span>
-                </button>
+                <img src="./images/menu.png" class="btn navbar-toggle" data-toggle="offcanvas"
+                    data-target=".sidebar-nav" onclick="google.maps.event.removeListener(addListenerHandler);" />
+                <span> </span>
                 <span id="nearby-count" class="badge badge-pill badge-danger">0</span>
             </div>
             <div class="navbar-center">
@@ -143,10 +146,11 @@
             <div id='btn-center'>
                 <h1>·</h1>
             </div>
-            <div id='btn-add'>
-                <h1>+</h1>
-            </div>
+        </div><!-- /.col-xs-12 main -->
+        <div id='btn-add'>
+            <h1>+</h1>
         </div>
+    </div>
 
     </div>
 

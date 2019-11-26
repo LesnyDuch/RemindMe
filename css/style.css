@@ -8,6 +8,16 @@ body, html, .row {
   height: 100%;
 }
 
+#nearby-count {
+  margin-left: 0.2em;
+}
+
+.navbar-brand {
+  position: absolute;
+  left: 43vw;
+  top: 4px;
+}
+
 body {
   overflow:hidden
 }
@@ -83,9 +93,10 @@ body {
     width: 80% !important;
   }
   
-  #sidebar {
-    padding-top: 0;
-  }
+  .navbar-toggle {
+    visibility: hidden;
+    width: 0px;
+    }
 
   /* The map needs to shift a bit */
   #map {
@@ -97,7 +108,65 @@ body {
       position: absolute !important;
       left: -80%;
   }
-}
+  .navbar-right img{
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+  }
+  #hamburger{
+    width:30px;
+    height:30px;
+    cursor: pointer;
+  }
+  #btn-add{
+    cursor:pointer;
+  }
+
+  /* collapsed sidebar styles */
+  @media screen and (max-width:900px) {
+    .navbar-toggle {
+        visibility: visible;
+        width: auto;
+    }
+
+    .navbar-brand {
+      left: 35vw;
+    }
+
+    .row-offcanvas {
+      position: relative;
+      -webkit-transition: all 0.25s ease-out;
+      -moz-transition: all 0.25s ease-out;
+      transition: all 0.25s ease-out;
+    }
+    .row-offcanvas-right
+    .sidebar-offcanvas {
+      right: -80% !important;
+    }
+  
+    .row-offcanvas-left
+    .sidebar-offcanvas {
+      left: -80% !important;
+    }
+    .row-offcanvas-right.active {
+      right: 80% !important;
+    }
+    .row-offcanvas-left.active {
+      left: 80% !important;
+    }
+    .sidebar-offcanvas {
+      position: absolute;
+      top: 0;
+      width: 80% !important;
+    }
+    #sidebar {
+      padding-top: 0;
+    }
+
+    #map {
+        position: relative !important;
+        margin-left: 0px;
+    }
 
 /* Change the sizes a bit on medium width screens */
   @media screen and (max-width:1100px) and (min-width:901px) {
