@@ -46,12 +46,11 @@ function loginGoogle() {
 * Store the notes in the database
 * @param uid  id value of the user in the databse. 
 */
-function dbNotePush(uid, noteId, /*latLng,*/ locationTitle, text) {
-
+function dbNotePush(uid, noteId, latLng, locationTitle, text) {
     let resp = db.ref("/user" + uid).push({
         uid: uid,
         noteId: noteId,
-        //location: latLng,
+        location: latLng,
         locationTitle: locationTitle,
         text: text
     })

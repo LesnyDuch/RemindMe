@@ -71,16 +71,12 @@
                 'click', () => { MAP.addNote(NOTES) })
             document.getElementById('btn-center').addEventListener(
                 'click', () => { MAP.setLocation(centerMap = true) })
-            // On narrow screens, this will close the sidebar, if the map is clicked
-            document.getElementById('map').addEventListener('click', () => {
-                $('#main').removeClass('active');
-                $('#map').removeClass('active');
-            });
+
             // This interval will check the current location every 5 seconds and redraw a circle in the map
             // At the same time it iterates through notes and checks if they are in range and highlights them
             setInterval(() => {
                 MAP.onUpdateLocation(NOTES);
-            }, 500000);
+            }, 5000);
 
             CIRCLE = new google.maps.Circle({
                 strokeColor: '#FF0000',

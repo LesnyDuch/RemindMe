@@ -2,6 +2,7 @@ const SIDEBAR_ID = '#sidebar';
 const NOTE_CLASS = 'note-card'
 // TEMPORARY test data
 var NOTES = []
+var CLOSE_MAP_LISTENER;
 
 /**
  * Find note by its ID.
@@ -66,15 +67,34 @@ var removeNote = function (notes, noteId) {
 }
 
 /**
+ * Opens the map, closes the sidebar
+ */
+var activateMap = function () {
+    $('#main').removeClass('active');
+    $('#map').removeClass('active');
+    document.getElementById('map').removeEventListener('click', activateMap);
+}
+
+/**
+ * Opens the sidebar
+ */
+var activateSidebar = function () {
+    // On narrow screens, this will close the sidebar, if the map is clicked
+    document.getElementById('map').addEventListener('click', activateMap);
+    $('#main').addClass('active');
+    $('#map').addClass('active');
+}
+/**
  * Sets the focus on a given note.
  * @param id Id of the note.
  */
 var focusNote = function (id) {
     // Open the sidebar, if it's not open
-    $('#main').addClass('active');
-    $('#map').addClass('active');
+    activateSidebar();
     // Set focus on the note
-    $(`#${id} textarea`).focus()
+    $(`#${id} textarea`).focus();
+    $(`#${id}`).addClass('focused');
+    setTimeout(() => { $(`#${id}`).removeClass('focused'); }, 700);
 }
 
 /**
@@ -85,6 +105,7 @@ var focusNote = function (id) {
 var centerNote = function (lat, lng, map) {
     console.log('Centering map to ' + lat + ' ' + lng);
     map.map.setCenter({ 'lat': lat, 'lng': lng });
+    activateMap();
 }
 
 /**
@@ -109,7 +130,7 @@ var drawNotes = function (notes) {
                     onclick='removeNote(NOTES, this.parentElement.id)'>
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h5 onclick='centerNote(${n.location.lat}, ${n.location.lng}, MAP)'>${n.locationTitle}</h5>
+                <h5 onclick='centerNote(${n.location.lat()}, ${n.location.lng()}, MAP)'>${n.locationTitle}</h5>
                 <textarea 
                     oninput='resizeNote(this)'
                     onresize='resizeNote(this)'
