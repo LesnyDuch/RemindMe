@@ -72,7 +72,7 @@ class RemindMap {
         let count = 0;
         // To avoid crashing when being called from a callback function
         // Mamma mia this is dirty
-        try { this.setLocation(); } catch { };
+        try { this.setLocation(); } catch  { };
 
         if (notes) {
             for (let n of notes) {
@@ -155,10 +155,9 @@ class RemindMap {
                         // Push the note to the local registry
                         notes.push(newNote);
                         // TODO: Add Push to db
-                        newNote.dbID = dbNotePush(uid, newNote.id_, /*event.latLng,*/ newNote.locationTitle, newNote.text)
+                        newNote.dbID = dbNotePush(uid, newNote.id_, latLng, newNote.locationTitle, newNote.text)
                         // Redraw the notes using the local registry
                         redrawNotes(notes);
-
                         // The add button is no longer highlighted
                         $('#btn-add').removeClass('active');
                         // Change focus to the new note
