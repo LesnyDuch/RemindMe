@@ -10,35 +10,55 @@ Docu: https://firebase.google.com/docs/auth/web/google-signin
 */
 function loginGoogle() {
     if (!firebase.auth().currentUser) {
+        NOTES = [];
         var provider = new firebase.auth.GoogleAuthProvider();
         provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
 
         firebase.auth().signInWithPopup(provider).then(function (result) {
             // This gives you a Google Access Token. You can use it to access the Google API.
-            var token = result.credential.accessToken;
-            var user = result.user;
-            uid = result.user.uid;
-            console.log('LOGDED USER:', 'email:', email, 'uid:', uid);
-
-            alert('You have successfully logged in');
-            console.log('Logged in')
+            let user = result.user;
+            uid = user.uid;
+            email = user.email;
+            alert('You have successfully logged in.');
+            $('#btn-add').show();
         }).catch(function (error) {
             // Handle Errors here.
             var errorCode = error.code;
-            var errorMessage = error.message;
-            var credential = error.credential;
             if (errorCode === 'auth/account-exists-with-different-credential') {
                 alert('This user does exist');
             }
-
         });
+    }
+    // Load user's notes
+    loadNotes(uid);
+}
+
+/**
+ * Logs out the currently logged in user.
+ */
+function logout() {
+    firebase.auth().signOut().then(function (result) {
+        alert('You have successfully logged out.');
+    }).catch((error) => { console.log(error) });
+    $('#btn-add').hide();
+    uid = null;
+    email = null;
+}
+
+/**
+ * Used on load, checks whether the user is logged in, and sets up the interface
+ * accordingly.
+ */
+function initUser() {
+    // A user is logged in, load their notes
+    if (firebase.auth().currentUser) {
+        // Load user's notes
+        uid = firebase.auth().currentUser.uid;
+        email = firebase.auth().currentUser.email;
+        loadNotes(uid);
+        $('#btn-add').show();
     } else {
-        firebase.auth().signOut().then(function (result) {
-            alert('You have successfully logged out');
-            console.log('Logged out')
-        }).catch(function (error) {
-
-        });
+        $('#btn-add').hide();
     }
 }
 
@@ -65,7 +85,6 @@ function dbUpdateNote(uid, noteId, text, dbID) {
     db.ref("/user" + uid).child(dbID).update({
         text: text
     })
-
 }
 
 /**
@@ -85,8 +104,11 @@ function loadNotes(uid) {
     userNotes.once('value').then(function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
             var data = childSnapshot.val();
-            console.log(data);
-            return (data);
+            if (data.location) {
+                data.location = new google.maps.LatLng(data.location.lat, data.location.lng);
+                NOTES.push(data);
+                redrawNotes(NOTES);
+            }
         })
     })
 

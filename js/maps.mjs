@@ -72,7 +72,7 @@ class RemindMap {
         let count = 0;
         // To avoid crashing when being called from a callback function
         // Mamma mia this is dirty
-        try { this.setLocation(); } catch { };
+        try { this.setLocation(); } catch  { };
 
         if (notes) {
             for (let n of notes) {
