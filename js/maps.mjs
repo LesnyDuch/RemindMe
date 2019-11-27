@@ -66,13 +66,17 @@ class RemindMap {
      * Updates the location of the user and highlights notes if they are nearby.
      * @param notes List of notes objects.
      */
-    onUpdateLocation(map, notes) {
-        let count = 0;
+    onUpdateLocation(notes) {
         // Calculates distance between two points
         let dist = google.maps.geometry.spherical.computeDistanceBetween;
-        this.setLocation();
+        let count = 0;
+        // To avoid crashing when being called from a callback function
+        // Mamma mia this is dirty
+        try { this.setLocation(); } catch { };
+
         if (notes) {
             for (let n of notes) {
+                console.log(n)
                 // Check if a note is in the radius and if yes, highlight it
                 if (dist(POSITION, n.location) <= RADIUS) {
                     $(`#${n.id_}`).addClass('highlighted');
@@ -113,21 +117,28 @@ class RemindMap {
      * @param notes List of notes objects.
      */
     addNote(notes) {
+        // Method references to be called from the callbacks
         var addMarker = this.addMarker;
         var placesService = this.placesService;
         var map = this.map;
+        var updateNearby = this.onUpdateLocation;
         // Disable the event listener in case it was activated before
         google.maps.event.removeListener(addListenerHandler);
-        // Changes the add button color to signal, that adding is enabled
+        // Changes the add button color to signal that adding is enabled
         $('#btn-add').addClass('active');
         // This event listener calls addMarker() when the map is clicked.
         addListenerHandler = google.maps.event.addListener(map, 'click',
             function (event) {
+                // Request for the places API
                 let request = {
                     'radius': 100,
                     'location': event.latLng,
                     'fields': ['name', 'formatted_address']
                 }
+                let latLng = {
+                    'lat': event.latLng.lat(),
+                    'lng': event.latLng.lng()
+                };
                 // This method uses Google's Place service to find the nearby places
                 placesService.nearbySearch(request, function (results, status) {
                     if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -143,12 +154,10 @@ class RemindMap {
                         addMarker(event.latLng, map, newNote.id_);
                         // Push the note to the local registry
                         notes.push(newNote);
-                        // TODO: Add Push to db
-                        console.log('uid:', uid, ' email:', email);
-                        newNote.dbID = dbNotePush(uid, newNote.id_, /*event.latLng,*/ newNote.locationTitle, newNote.text)
-                        console.log(newNote)
+                        newNote.dbID = dbNotePush(uid, newNote.id_, latLng, newNote.locationTitle, newNote.text)
                         // Redraw the notes using the local registry
                         redrawNotes(notes);
+                        updateNearby(notes);
                         // The add button is no longer highlighted
                         $('#btn-add').removeClass('active');
                         // Change focus to the new note

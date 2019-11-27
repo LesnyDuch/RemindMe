@@ -41,7 +41,11 @@
 }
 
 .note-card.highlighted {
-    background-color: #5edd5e;
+    background-color: #72ec72;
+}
+
+.note-card.focused {
+    background-color: #26b0ff;
 }
 
 @media screen and (max-width:1100px) {
