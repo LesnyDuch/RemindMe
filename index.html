@@ -132,28 +132,38 @@
             </div>
             <div class="navbar-right">
                 <div class="navbar-login">
-                    <img id="login-btn" onclick="loginGoogle()" src="./images/avatar.png" alt="user" />
+                    <dic class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <img id="login-btn" src="./images/avatar.png" alt="user" /><b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a data-toggle="modal" data-target="#Login" href="#" onclick="loginGoogle()">Login</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a data-toggle="modal" data-target="#email" href="#">
+                                    <script>email</script></a></li>
+                            <li><a data-toggle="modal" data-target="#logout" onclick="logout()" href="#">Logout</a></li>
                 </div>
             </div>
         </div>
+    </div>
 
 
-        <div id="main" class="row row-offcanvas row-offcanvas-left">
-            <!-- sidebar -->
-            <div class="sidebar-offcanvas" id="sidebar" role="navigation">
-                <div id="loader"></div>
-            </div>
-            <!-- main area -->
-            <div id="map">
-            </div>
-            <div id="btn-center">
-                <img src="./images/center.png" />
-            </div>
-
-        </div><!-- /.col-xs-12 main -->
-        <div id='btn-add'>
-            <h1>+</h1>
+    <div id="main" class="row row-offcanvas row-offcanvas-left">
+        <!-- sidebar -->
+        <div class="sidebar-offcanvas" id="sidebar" role="navigation">
+            <div id="loader"></div>
         </div>
+        <!-- main area -->
+        <div id="map">
+        </div>
+        <div id="btn-center">
+            <img src="./images/center.png" />
+        </div>
+
+    </div><!-- /.col-xs-12 main -->
+    <div id='btn-add'>
+        <h1>+</h1>
+    </div>
     </div>
 
     </div>
