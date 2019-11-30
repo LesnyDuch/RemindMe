@@ -76,7 +76,6 @@ class RemindMap {
 
         if (notes) {
             for (let n of notes) {
-                console.log(n)
                 // Check if a note is in the radius and if yes, highlight it
                 if (dist(POSITION, n.location) <= RADIUS) {
                     $(`#${n.id_}`).addClass('highlighted');
