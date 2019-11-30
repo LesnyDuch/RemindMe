@@ -8,7 +8,8 @@ const RADIUS = 100;
 // Dictionary containing id:marker pairs, used to delete markers from map
 var MARKERS = {};
 // Shows the user's position on the map
-var CIRCLE;
+var currentMarker;
+
 
 /**
  * Generates random UUID for the database entries.
@@ -54,7 +55,7 @@ class RemindMap {
                 POSITION = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 if (centerMap)
                     map.setCenter(POSITION);
-                CIRCLE.setCenter(POSITION);
+                currentMarker.setPosition(POSITION);
             }, handleLocationError);
         } else {
             // Browser doesn't support Geolocation

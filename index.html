@@ -69,16 +69,20 @@
                 MAP.onUpdateLocation(NOTES);
             }, 5000);
 
-            CIRCLE = new google.maps.Circle({
-                strokeColor: '#0000FF',
-                strokeOpacity: 0.7,
-                strokeWeight: 30,
-                fillColor: '#0000FF',
-                fillOpacity: 0.35,
+
+            var here = {
+                url: "./images/current.png", // url
+                scaledSize: new google.maps.Size(50, 50),
+                size: new google.maps.Size(50, 50),
+
+            }
+
+            currentMarker = new google.maps.Marker({
                 map: MAP.map,
-                center: POSITION,
-                radius: RADIUS / 10
+                icon: here
             });
+
+
             // Initialize Firebase
             firebase.initializeApp(firebaseConfig);
             //Create db server:
