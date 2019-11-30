@@ -79,10 +79,10 @@ class RemindMap {
             for (let n of notes) {
                 // Check if a note is in the radius and if yes, highlight it
                 if (dist(POSITION, n.location) <= RADIUS) {
-                    $(`#${n.id_}`).addClass('highlighted');
+                    $(`#${n.noteId}`).addClass('highlighted');
                     count++;
                 } else {
-                    $(`#${n.id_}`).removeClass('highlighted');
+                    $(`#${n.noteId}`).removeClass('highlighted');
                 }
             }
         }
@@ -155,23 +155,23 @@ class RemindMap {
                     }
 
                     let newNote = {
-                        'id_': uuidv4(),
+                        'noteId': uuidv4(),
                         'location': event.latLng,
                         'locationTitle': placeName,
                         'text': ""
                     };
                     // Add the marker to the MAP
-                    addMarker(event.latLng, map, newNote.id_);
+                    addMarker(event.latLng, map, newNote.noteId);
                     // Push the note to the local registry
                     notes.push(newNote);
-                    newNote.dbID = dbNotePush(uid, newNote.id_, latLng, newNote.locationTitle, newNote.text)
+                    newNote.dbID = dbNotePush(uid, newNote.noteId, latLng, newNote.locationTitle, newNote.text)
                     // Redraw the notes using the local registry
                     redrawNotes(notes);
                     updateNearby(notes);
                     // The add button is no longer highlighted
                     $('#btn-add').removeClass('active');
                     // Change focus to the new note
-                    focusNote(newNote.id_);
+                    focusNote(newNote.noteId);
                 });
             });
     }

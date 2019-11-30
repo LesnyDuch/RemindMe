@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/loader-style.css">
     <link rel="stylesheet" href="css/card-style.css">
     <link rel="stylesheet" href="css/navbar-style.css">
     <link rel="stylesheet" href="css/btn-add-style.css">
@@ -104,8 +105,8 @@
     </script>
 
     <!-- Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initialize&libraries=places,geometry"
-        async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=KEY&callback=initialize&libraries=places,geometry" async
+        defer></script>
 </head>
 
 <body>
@@ -140,7 +141,6 @@
                                     href="#">Logout</a>
                             </li>
                             <li id="logout-email">
-
                             </li>
                 </div>
             </div>
@@ -150,7 +150,18 @@
     <div id="main" class="row row-offcanvas row-offcanvas-left">
         <!-- sidebar -->
         <div class="sidebar-offcanvas" id="sidebar" role="navigation">
-            <div id="loader"></div>
+            <div id="loader">
+                <div class="lds-roller">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
         </div>
         <!-- main area -->
         <div id="map">
