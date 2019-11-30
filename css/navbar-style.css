@@ -24,10 +24,18 @@
   width: 0px;
 }
 
+.navbar-center {
+  text-align: center;
+}
+
+.navbar-right {
+  float: right;
+}
+
 .navbar-brand {
   position: absolute;
-  left: 43vw;
   top: 4px;
+  margin-left: 4vw;
 }
 
 #nearby-count {
@@ -62,15 +70,7 @@
     padding-bottom: 0px !important;
     margin-right: 4px;
   }
-
   .navbar-brand {
-    left: 37vw;
-  }
-}
-
-/* Change the offset a bit on medium width screens */
-@media screen and (max-width:1100px) and (min-width:901px) {
-  .navbar-brand {
-    left: 45vw;
+    margin-left: 0;
   }
 }
