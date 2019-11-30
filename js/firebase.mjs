@@ -44,6 +44,12 @@ function logout() {
         NOTES = [];
         redrawNotes(NOTES);
         initUser();
+        // Clear Markers
+        for (m of MARKERS) {
+            m.setMap(null);
+        }
+        MARKERS = [];
+
     }).catch((error) => { console.log(error) });
 }
 
@@ -119,7 +125,6 @@ function loadNotes(uid) {
     var userNotes = db.ref('user' + uid);
     userNotes.once('value').then(function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
-            console.log(childSnapshot)
             var data = childSnapshot.val();
             data.dbID = childSnapshot.W.path.o[1];
             data.location = new google.maps.LatLng(data.location.lat, data.location.lng);

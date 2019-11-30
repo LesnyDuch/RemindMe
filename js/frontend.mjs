@@ -12,7 +12,6 @@ var CLOSE_MAP_LISTENER;
  */
 var findNote = function (notes, noteId) {
     let id;
-    console.log(noteId);
     for (let i = 0; i < notes.length; i++) {
         if (notes[i].noteId == noteId) {
             id = i;
@@ -59,7 +58,6 @@ var removeNote = function (notes, noteId) {
     note.classList.add('collapsed');
     setTimeout(function () { document.getElementById(noteId).remove() }, 400);
     let id = findNote(notes, noteId);
-    console.log(id);
     dbRemoveNote(uid, noteId, notes[id].dbID)
     // Remove from local registry
     notes.splice(findNote(notes, noteId), 1);
@@ -73,7 +71,6 @@ var removeNote = function (notes, noteId) {
 var activateMap = function () {
     $('#main').removeClass('active');
     $('#map').removeClass('active');
-    document.getElementById('map').removeEventListener('click', activateMap);
 }
 
 /**
@@ -81,7 +78,6 @@ var activateMap = function () {
  */
 var activateSidebar = function () {
     // On narrow screens, this will close the sidebar, if the map is clicked
-    document.getElementById('map').addEventListener('click', activateMap);
     $('#main').addClass('active');
     $('#map').addClass('active');
 }
@@ -95,7 +91,7 @@ var focusNote = function (id) {
     // Set focus on the note
     $(`#${id} textarea`).focus();
     $(`#${id}`).addClass('focused');
-    setTimeout(() => { $(`#${id}`).removeClass('focused'); }, 700);
+    setTimeout(() => { $(`#${id}`).removeClass('focused'); }, 1000);
 }
 
 /**

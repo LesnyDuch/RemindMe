@@ -160,8 +160,6 @@ class RemindMap {
                         'locationTitle': placeName,
                         'text': ""
                     };
-                    // Add the marker to the MAP
-                    addMarker(event.latLng, map, newNote.noteId);
                     // Push the note to the local registry
                     notes.push(newNote);
                     newNote.dbID = dbNotePush(uid, newNote.noteId, latLng, newNote.locationTitle, newNote.text)
@@ -172,6 +170,8 @@ class RemindMap {
                     $('#btn-add').removeClass('active');
                     // Change focus to the new note
                     focusNote(newNote.noteId);
+                    // Add the marker to the MAP
+                    addMarker(event.latLng, map, newNote.noteId);
                 });
             });
     }
