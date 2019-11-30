@@ -20,7 +20,7 @@ function loginGoogle() {
             uid = user.uid;
             email = user.email;
             alert('You have successfully logged in.');
-            $('#btn-add').show();
+            initUser();
         }).catch(function (error) {
             // Handle Errors here.
             var errorCode = error.code;
@@ -39,10 +39,12 @@ function loginGoogle() {
 function logout() {
     firebase.auth().signOut().then(function (result) {
         alert('You have successfully logged out.');
+        uid = null;
+        email = null;
+        NOTES = [];
+        redrawNotes(NOTES);
+        initUser();
     }).catch((error) => { console.log(error) });
-    $('#btn-add').hide();
-    uid = null;
-    email = null;
 }
 
 
@@ -58,16 +60,17 @@ function initUser() {
         uid = firebase.auth().currentUser.uid;
         email = firebase.auth().currentUser.email;
         loadNotes(uid);
-        console.log(email);
 
         $('#btn-add').show();
         $('#login-link').hide();
         $('#logout-link').show();
+        console.log($('#logout-link'));
         $('#logout-email').show();
-        console.log(email);
         $('#logout-email').html(`Logged in as ${email}`);
 
     } else {
+        NOTES = [];
+        redrawNotes(NOTES);
         $('#btn-add').hide();
         $('#login-link').show();
         $('#logout-link').hide();

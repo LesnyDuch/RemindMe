@@ -153,27 +153,6 @@ class RemindMap {
                         console.log('Google Places API error');
                         return
                     }
-                    let newNote = {
-                        'id_': uuidv4(),
-                        'location': event.latLng,
-                        'locationTitle': placeName,
-                        'text': ""
-                    };
-                    // Add the marker to the MAP
-                    addMarker(event.latLng, map, newNote.id_);
-                    // Push the note to the local registry
-                    notes.push(newNote);
-                    // TODO: Add Push to db
-                    newNote.dbID = dbNotePush(uid, newNote.id_, /*event.latLng,*/ newNote.locationTitle, newNote.text)
-                    // Redraw the notes using the local registry
-                    redrawNotes(notes);
-
-                    // The add button is no longer highlighted
-                    $('#btn-add').removeClass('active');
-                    // Change focus to the new note
-                    focusNote(newNote.id_);
-
-
 
                     let newNote = {
                         'id_': uuidv4(),
