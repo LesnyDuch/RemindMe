@@ -109,7 +109,6 @@ function dbUpdateNote(uid, noteId, text, dbID) {
 */
 function dbRemoveNote(uid, noteId, dbID) {
     db.ref("/user" + uid).child(dbID).remove();
-
 }
 
 /*Load the data that is stored in /useruid ans save the values of the childs of this root into the
@@ -123,11 +122,10 @@ function loadNotes(uid) {
             console.log(childSnapshot)
             var data = childSnapshot.val();
             data.dbID = childSnapshot.W.path.o[1];
-            if (data.location) {
-                data.location = new google.maps.LatLng(data.location.lat, data.location.lng);
-                NOTES.push(data);
-                redrawNotes(NOTES);
-            }
+            data.location = new google.maps.LatLng(data.location.lat, data.location.lng);
+            NOTES.push(data);
+            redrawNotes(NOTES);
+            MAP.addMarker(data.location, MAP.map, data.noteId);
         })
     })
 

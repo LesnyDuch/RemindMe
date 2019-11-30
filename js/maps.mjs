@@ -92,8 +92,8 @@ class RemindMap {
 
     /** Adds a marker to the map.
      * @param {*} location Location returned by the calling event handler
-     * @param {*} map Map object
-     * @returns Information about the Marker and location
+     * @param {*} map Map object, necessary for callbacks.
+     * @param {*} id Note's noteId attribute.
      */
     addMarker(location, map, id) {
         // Add the marker at the clicked location, and add the next-available label
