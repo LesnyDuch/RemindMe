@@ -141,31 +141,37 @@ class RemindMap {
                 };
                 // This method uses Google's Place service to find the nearby places
                 placesService.nearbySearch(request, function (results, status) {
+                    let placeName;
                     if (status == google.maps.places.PlacesServiceStatus.OK) {
                         // Closest place's name
-                        let placeName = results[0]['name'];
-                        let newNote = {
-                            'id_': uuidv4(),
-                            'location': event.latLng,
-                            'locationTitle': placeName,
-                            'text': ""
-                        };
-                        // Add the marker to the MAP
-                        addMarker(event.latLng, map, newNote.id_);
-                        // Push the note to the local registry
-                        notes.push(newNote);
-                        newNote.dbID = dbNotePush(uid, newNote.id_, latLng, newNote.locationTitle, newNote.text)
-                        // Redraw the notes using the local registry
-                        redrawNotes(notes);
-                        updateNearby(notes);
-                        // The add button is no longer highlighted
-                        $('#btn-add').removeClass('active');
-                        // Change focus to the new note
-                        focusNote(newNote.id_);
+                        placeName = results[0]['name'];
+                    } else if (status == 'ZERO_RESULTS') {
+                        // If no place is found set as the coordinates, reduced to 3
+                        // decimal places
+                        placeName = `${latLng.lat.toFixed(3)}, ${latLng.lng.toFixed(3)}`
+                    } else {
+                        console.log('Google Places API error');
+                        return
                     }
-                    else {
-                        console.log(status)
-                    }
+
+                    let newNote = {
+                        'id_': uuidv4(),
+                        'location': event.latLng,
+                        'locationTitle': placeName,
+                        'text': ""
+                    };
+                    // Add the marker to the MAP
+                    addMarker(event.latLng, map, newNote.id_);
+                    // Push the note to the local registry
+                    notes.push(newNote);
+                    newNote.dbID = dbNotePush(uid, newNote.id_, latLng, newNote.locationTitle, newNote.text)
+                    // Redraw the notes using the local registry
+                    redrawNotes(notes);
+                    updateNearby(notes);
+                    // The add button is no longer highlighted
+                    $('#btn-add').removeClass('active');
+                    // Change focus to the new note
+                    focusNote(newNote.id_);
                 });
             });
     }
