@@ -12,8 +12,9 @@ var CLOSE_MAP_LISTENER;
  */
 var findNote = function (notes, noteId) {
     let id;
+    console.log(noteId);
     for (let i = 0; i < notes.length; i++) {
-        if (notes[i].id_ == noteId) {
+        if (notes[i].noteId == noteId) {
             id = i;
         }
     }
@@ -57,8 +58,8 @@ var removeNote = function (notes, noteId) {
     }
     note.classList.add('collapsed');
     setTimeout(function () { document.getElementById(noteId).remove() }, 400);
-    // TODO: Remove from DB
     let id = findNote(notes, noteId);
+    console.log(id);
     dbRemoveNote(uid, noteId, notes[id].dbID)
     // Remove from local registry
     notes.splice(findNote(notes, noteId), 1);
@@ -125,7 +126,7 @@ var drawNotes = function (notes) {
     for (let n of notes) {
         $(SIDEBAR_ID).append(
             `
-            <div class="${NOTE_CLASS}" id="${n.id_}">
+            <div class="${NOTE_CLASS}" id="${n.noteId}">
                 <button type="button" class="close" aria-label="Close"
                     onclick='removeNote(NOTES, this.parentElement.id)'>
                     <span aria-hidden="true">&times;</span>

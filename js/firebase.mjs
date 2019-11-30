@@ -75,6 +75,7 @@ function initUser() {
         $('#login-link').show();
         $('#logout-link').hide();
         $('#logout-email').hide();
+        $('#sidebar').html('Log in to add notes!')
     }
 }
 
@@ -119,7 +120,9 @@ function loadNotes(uid) {
     var userNotes = db.ref('user' + uid);
     userNotes.once('value').then(function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
+            console.log(childSnapshot)
             var data = childSnapshot.val();
+            data.dbID = childSnapshot.W.path.o[1];
             if (data.location) {
                 data.location = new google.maps.LatLng(data.location.lat, data.location.lng);
                 NOTES.push(data);
