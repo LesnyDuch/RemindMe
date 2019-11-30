@@ -26,7 +26,6 @@ var findNote = function (notes, noteId) {
  * @param {*} text Text of the note to be updated.
  */
 var updateNote = function (notes, noteId, text) {
-    console.log('Updating note ' + noteId);
     let id = findNote(notes, noteId);
     notes[id].text = text;
     // TODO: Update database;

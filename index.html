@@ -52,14 +52,6 @@
         // Your web app's Firebase configuration
         var firebaseConfig = {
             //TO COPY HERE!!
-            apiKey: "AIzaSyCJDW9ATgtM_oiVEmJdbXU2AaXDidfxIV4",
-            authDomain: "lamad-remindme.firebaseapp.com",
-            databaseURL: "https://lamad-remindme.firebaseio.com",
-            projectId: "lamad-remindme",
-            storageBucket: "lamad-remindme.appspot.com",
-            messagingSenderId: "906057919841",
-            appId: "1:906057919841:web:384fc5372f03ea9ca1e920",
-            measurementId: "G-RTWDN5HJPH"
         };
 
         function initialize() {
@@ -94,7 +86,7 @@
             setTimeout(() => {
                 initUser();
                 $("#loader").hide();
-            }, 400);
+            }, 2000);
         };
 
         $(document).ready(function () {
@@ -108,8 +100,7 @@
     </script>
 
     <!-- Google Maps API -->
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA0U_zPscvuSPiAs3eRYVT5NjiH4xOj2bY&callback=initialize&libraries=places,geometry"
+    <script src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initialize&libraries=places,geometry"
         async defer></script>
 </head>
 
@@ -133,13 +124,20 @@
             <div class="navbar-right">
                 <div class="navbar-login">
                     <dic class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <a data-toggle="dropdown" href="#">
                             <img id="login-btn" src="./images/avatar.png" alt="user" /><b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a data-toggle="modal" data-target="#Login" href="#" onclick="loginGoogle()">Login</a>
+                        <ul id="account-dropdown" class="dropdown-menu dropdown">
+                            <li>
+                                <a id="login-link" data-toggle="modal" data-target="#Login" href="#"
+                                    onclick="loginGoogle()">Login</a>
                             </li>
-                            <li class="divider"></li>
-                            <li><a data-toggle="modal" data-target="#logout" onclick="logout()" href="#">Logout</a></li>
+                            <li>
+                                <a id="logout-link" data-toggle="modal" data-target="#logout" onclick="logout()"
+                                    href="#">Logout</a>
+                            </li>
+                            <li id="logout-email">
+
+                            </li>
                 </div>
             </div>
         </div>

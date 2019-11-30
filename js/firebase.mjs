@@ -45,6 +45,8 @@ function logout() {
     email = null;
 }
 
+
+
 /**
  * Used on load, checks whether the user is logged in, and sets up the interface
  * accordingly.
@@ -56,9 +58,20 @@ function initUser() {
         uid = firebase.auth().currentUser.uid;
         email = firebase.auth().currentUser.email;
         loadNotes(uid);
+        console.log(email);
+
         $('#btn-add').show();
+        $('#login-link').hide();
+        $('#logout-link').show();
+        $('#logout-email').show();
+        console.log(email);
+        $('#logout-email').html(`Logged in as ${email}`);
+
     } else {
         $('#btn-add').hide();
+        $('#login-link').show();
+        $('#logout-link').hide();
+        $('#logout-email').hide();
     }
 }
 
