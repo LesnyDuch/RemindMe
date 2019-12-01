@@ -43,12 +43,12 @@ function logout() {
         email = null;
         NOTES = [];
         redrawNotes(NOTES);
-        initUser();
         // Clear Markers
-        for (m of MARKERS) {
-            m.setMap(null);
+        for (let m in MARKERS) {
+            MARKERS[m].setMap(null);
         }
         MARKERS = [];
+        initUser();
 
     }).catch((error) => { console.log(error) });
 }
