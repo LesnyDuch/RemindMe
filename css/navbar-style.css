@@ -15,21 +15,50 @@
   height: 30px;
   cursor: pointer;
 }
+.navbar-right img:hover{
+  opacity: 0.8;
+}
 
 .navbar-toggle {
   visibility: hidden;
   width: 0px;
 }
 
+.navbar-center {
+  text-align: center;
+}
+
+.navbar-right {
+  float: right;
+}
+
 .navbar-brand {
   position: absolute;
-  left: 43vw;
   top: 4px;
+  margin-left: 4vw;
 }
 
 #nearby-count {
   margin-left: 0.2em;
 }
+
+#account-dropdown {
+  text-align: center;
+  margin-left: -170px;
+  margin-top: 16px;
+  box-shadow: 10px 0px 8px 0px #888888;
+  z-index: 9;
+  border-radius: 0%;
+
+  width: 220px;
+}
+
+#logout-email {
+  margin: 5px;
+  font-size: 0.7em;
+  font-weight: bold;
+}
+
 
 /* The toggle is visible on narrow screens, when sidebar is collapsed*/
 @media screen and (max-width:900px) {
@@ -41,15 +70,7 @@
     padding-bottom: 0px !important;
     margin-right: 4px;
   }
-
   .navbar-brand {
-    left: 37vw;
-  }
-}
-
-/* Change the offset a bit on medium width screens */
-@media screen and (max-width:1100px) and (min-width:901px) {
-  .navbar-brand {
-    left: 45vw;
+    margin-left: 0;
   }
 }

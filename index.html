@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/loader-style.css">
     <link rel="stylesheet" href="css/card-style.css">
     <link rel="stylesheet" href="css/navbar-style.css">
     <link rel="stylesheet" href="css/btn-add-style.css">
@@ -45,28 +46,20 @@
     <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.4.0/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
-
     <script>
+        var MAP;
+        var db;
+
         // Your web app's Firebase configuration
         var firebaseConfig = {
             //TO COPY HERE!!
 
         };
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        firebase.analytics();
-        //Create db server:
-        var db = firebase.database();
-        var dbref = firebase.database().ref().child('user');
-    </script>
-
-    <script>
-        var MAP;
-        var NOTES = [];
 
         function initialize() {
             MAP = new RemindMap('map');
             GOOGLE = google;
+            POSITION = new google.maps.LatLng(62.60, 29.76);
             document.getElementById('btn-add').addEventListener(
                 'click', () => { MAP.addNote(NOTES) })
             document.getElementById('btn-center').addEventListener(
@@ -78,16 +71,28 @@
                 MAP.onUpdateLocation(NOTES);
             }, 5000);
 
-            CIRCLE = new google.maps.Circle({
-                strokeColor: '#FF0000',
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: '#FF0000',
-                fillOpacity: 0.35,
+
+            var here = {
+                url: "./images/current.png", // url
+                scaledSize: new google.maps.Size(45, 45),
+                size: new google.maps.Size(45, 45),
+
+            }
+
+            currentMarker = new google.maps.Marker({
                 map: MAP.map,
-                center: POSITION,
-                radius: RADIUS / 10
+                icon: here
             });
+
+
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            //Create db server:
+            db = firebase.database();
+            setTimeout(() => {
+                initUser();
+                $("#loader").hide();
+            }, 4000);
         };
 
         $(document).ready(function () {
@@ -95,15 +100,14 @@
                 $('.row-offcanvas').toggleClass('active');
                 $('#map').toggleClass('active');
             });
-            // TODO: Add loading of notes from db
-            drawNotes(NOTES);
             // Resize the content of the page to respect the navbar
             $('#main').height($(window).height() - 56)
         });
     </script>
 
     <!-- Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initialize&libraries=places,geometry"
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=KEY&callback=initialize&libraries=places,geometry"
         async defer></script>
 </head>
 
@@ -126,30 +130,52 @@
             </div>
             <div class="navbar-right">
                 <div class="navbar-login">
-                    <img id="login-btn" onclick="loginGoogle()" src="./images/avatar.png" alt="user" />
+                    <dic class="dropdown">
+                        <a data-toggle="dropdown" href="#">
+                            <img id="login-btn" src="./images/avatar.png" alt="user" /><b class="caret"></b></a>
+                        <ul id="account-dropdown" class="dropdown-menu dropdown">
+                            <li>
+                                <a id="login-link" data-toggle="modal" data-target="#Login" href="#"
+                                    onclick="loginGoogle()">Login</a>
+                            </li>
+                            <li>
+                                <a id="logout-link" data-toggle="modal" data-target="#logout" onclick="logout()"
+                                    href="#">Logout</a>
+                            </li>
+                            <li id="logout-email">
+                            </li>
                 </div>
             </div>
         </div>
+    </div>
 
-
-        <div id="main" class="row row-offcanvas row-offcanvas-left">
-            <!-- sidebar -->
-            <div class="sidebar-offcanvas" id="sidebar" role="navigation">
+    <div id="main" class="row row-offcanvas row-offcanvas-left">
+        <!-- sidebar -->
+        <div class="sidebar-offcanvas" id="sidebar" role="navigation">
+            <div id="loader">
+                <!-- SOURCE: https://loading.io/css/ -->
+                <div class="lds-roller">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
             </div>
-            <!-- main area -->
-            <div id="map">
-            </div>
-            <div id='btn-center'>
-                <h1>·</h1>
-            </div>
-        </div><!-- /.col-xs-12 main -->
+        </div>
+        <!-- main area -->
+        <div id="map">
+        </div>
+        <div id="btn-center">
+            <img src="./images/center.png" />
+        </div>
         <div id='btn-add'>
             <h1>+</h1>
         </div>
-    </div>
-
-    </div>
-
+    </div><!-- /.col-xs-12 main -->
 </body>
 
 </html>

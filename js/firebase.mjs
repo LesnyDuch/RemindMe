@@ -10,35 +10,78 @@ Docu: https://firebase.google.com/docs/auth/web/google-signin
 */
 function loginGoogle() {
     if (!firebase.auth().currentUser) {
+        NOTES = [];
         var provider = new firebase.auth.GoogleAuthProvider();
         provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
 
         firebase.auth().signInWithPopup(provider).then(function (result) {
             // This gives you a Google Access Token. You can use it to access the Google API.
-            var token = result.credential.accessToken;
-            var user = result.user;
-            uid = result.user.uid;
-            console.log('LOGDED USER:', 'email:', email, 'uid:', uid);
-
-            alert('You have successfully logged in');
-            console.log('Logged in')
+            let user = result.user;
+            uid = user.uid;
+            email = user.email;
+            alert('You have successfully logged in.');
+            initUser();
         }).catch(function (error) {
             // Handle Errors here.
             var errorCode = error.code;
-            var errorMessage = error.message;
-            var credential = error.credential;
             if (errorCode === 'auth/account-exists-with-different-credential') {
                 alert('This user does exist');
             }
-
         });
+    }
+    // Load user's notes
+    loadNotes(uid);
+}
+
+/**
+ * Logs out the currently logged in user.
+ */
+function logout() {
+    firebase.auth().signOut().then(function (result) {
+        alert('You have successfully logged out.');
+        uid = null;
+        email = null;
+        NOTES = [];
+        redrawNotes(NOTES);
+        // Clear Markers
+        for (let m in MARKERS) {
+            MARKERS[m].setMap(null);
+        }
+        MARKERS = [];
+        initUser();
+
+    }).catch((error) => { console.log(error) });
+}
+
+
+
+/**
+ * Used on load, checks whether the user is logged in, and sets up the interface
+ * accordingly.
+ */
+function initUser() {
+    // A user is logged in, load their notes
+    if (firebase.auth().currentUser) {
+        // Load user's notes
+        uid = firebase.auth().currentUser.uid;
+        email = firebase.auth().currentUser.email;
+        loadNotes(uid);
+
+        $('#btn-add').show();
+        $('#login-link').hide();
+        $('#logout-link').show();
+        console.log($('#logout-link'));
+        $('#logout-email').show();
+        $('#logout-email').html(`Logged in as ${email}`);
+
     } else {
-        firebase.auth().signOut().then(function (result) {
-            alert('You have successfully logged out');
-            console.log('Logged out')
-        }).catch(function (error) {
-
-        });
+        NOTES = [];
+        redrawNotes(NOTES);
+        $('#btn-add').hide();
+        $('#login-link').show();
+        $('#logout-link').hide();
+        $('#logout-email').hide();
+        $('#sidebar').html('Log in to add notes!')
     }
 }
 
@@ -65,7 +108,6 @@ function dbUpdateNote(uid, noteId, text, dbID) {
     db.ref("/user" + uid).child(dbID).update({
         text: text
     })
-
 }
 
 /**
@@ -73,5 +115,23 @@ function dbUpdateNote(uid, noteId, text, dbID) {
 */
 function dbRemoveNote(uid, noteId, dbID) {
     db.ref("/user" + uid).child(dbID).remove();
+}
+
+/*Load the data that is stored in /useruid ans save the values of the childs of this root into the
+* var data which contains {locationTitle: "...", location: "...", noteId: "..", text: "", uid: "..."}
+* Documentation: https://firebase.google.com/docs/database/web/lists-of-data
+*/
+function loadNotes(uid) {
+    var userNotes = db.ref('user' + uid);
+    userNotes.once('value').then(function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+            var data = childSnapshot.val();
+            data.dbID = childSnapshot.W.path.o[1];
+            data.location = new google.maps.LatLng(data.location.lat, data.location.lng);
+            NOTES.push(data);
+            redrawNotes(NOTES);
+            MAP.addMarker(data.location, MAP.map, data.noteId);
+        })
+    })
 
 }

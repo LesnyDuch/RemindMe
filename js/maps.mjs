@@ -8,7 +8,8 @@ const RADIUS = 100;
 // Dictionary containing id:marker pairs, used to delete markers from map
 var MARKERS = {};
 // Shows the user's position on the map
-var CIRCLE;
+var currentMarker;
+
 
 /**
  * Generates random UUID for the database entries.
@@ -54,7 +55,7 @@ class RemindMap {
                 POSITION = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 if (centerMap)
                     map.setCenter(POSITION);
-                CIRCLE.setCenter(POSITION);
+                currentMarker.setPosition(POSITION);
             }, handleLocationError);
         } else {
             // Browser doesn't support Geolocation
@@ -72,17 +73,16 @@ class RemindMap {
         let count = 0;
         // To avoid crashing when being called from a callback function
         // Mamma mia this is dirty
-        try { this.setLocation(); } catch { };
+        try { this.setLocation(); } catch  { };
 
         if (notes) {
             for (let n of notes) {
-                console.log(n)
                 // Check if a note is in the radius and if yes, highlight it
                 if (dist(POSITION, n.location) <= RADIUS) {
-                    $(`#${n.id_}`).addClass('highlighted');
+                    $(`#${n.noteId}`).addClass('highlighted');
                     count++;
                 } else {
-                    $(`#${n.id_}`).removeClass('highlighted');
+                    $(`#${n.noteId}`).removeClass('highlighted');
                 }
             }
         }
@@ -92,8 +92,8 @@ class RemindMap {
 
     /** Adds a marker to the map.
      * @param {*} location Location returned by the calling event handler
-     * @param {*} map Map object
-     * @returns Information about the Marker and location
+     * @param {*} map Map object, necessary for callbacks.
+     * @param {*} id Note's noteId attribute.
      */
     addMarker(location, map, id) {
         // Add the marker at the clicked location, and add the next-available label
@@ -155,23 +155,23 @@ class RemindMap {
                     }
 
                     let newNote = {
-                        'id_': uuidv4(),
+                        'noteId': uuidv4(),
                         'location': event.latLng,
                         'locationTitle': placeName,
                         'text': ""
                     };
-                    // Add the marker to the MAP
-                    addMarker(event.latLng, map, newNote.id_);
                     // Push the note to the local registry
                     notes.push(newNote);
-                    newNote.dbID = dbNotePush(uid, newNote.id_, latLng, newNote.locationTitle, newNote.text)
+                    newNote.dbID = dbNotePush(uid, newNote.noteId, latLng, newNote.locationTitle, newNote.text)
                     // Redraw the notes using the local registry
                     redrawNotes(notes);
                     updateNearby(notes);
                     // The add button is no longer highlighted
                     $('#btn-add').removeClass('active');
                     // Change focus to the new note
-                    focusNote(newNote.id_);
+                    focusNote(newNote.noteId);
+                    // Add the marker to the MAP
+                    addMarker(event.latLng, map, newNote.noteId);
                 });
             });
     }

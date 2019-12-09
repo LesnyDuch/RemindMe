@@ -8,14 +8,16 @@
     height: 4em;
 
     position: absolute;
-    left: 25vw;
+    left: 27vw;
     bottom: 3em;
 
     text-align: center;
 }
-
-#btn-center h1 {
-    font-size: 3.3em;
+#btn-center img{
+    
+    width:3em;
+    height:3em;
+    margin-top: 8px;
 }
 
 #btn-center:hover {
@@ -39,13 +41,13 @@
 
 @media screen and (max-width:1100px) {
     #btn-center {
-      left: 38vw;
+      left: 27vw;
     }
 }
 
 @media screen and (max-width:900px) {
     #btn-center {
-        left: 6vw;
+        left: 6.4vw;
       }
   }
 

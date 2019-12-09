@@ -13,7 +13,7 @@ var CLOSE_MAP_LISTENER;
 var findNote = function (notes, noteId) {
     let id;
     for (let i = 0; i < notes.length; i++) {
-        if (notes[i].id_ == noteId) {
+        if (notes[i].noteId == noteId) {
             id = i;
         }
     }
@@ -26,11 +26,11 @@ var findNote = function (notes, noteId) {
  * @param {*} text Text of the note to be updated.
  */
 var updateNote = function (notes, noteId, text) {
-    console.log('Updating note ' + noteId);
     let id = findNote(notes, noteId);
     notes[id].text = text;
     // TODO: Update database;
     dbUpdateNote(uid, noteId, text, notes[id].dbID)
+
 }
 
 
@@ -57,7 +57,6 @@ var removeNote = function (notes, noteId) {
     }
     note.classList.add('collapsed');
     setTimeout(function () { document.getElementById(noteId).remove() }, 400);
-    // TODO: Remove from DB
     let id = findNote(notes, noteId);
     dbRemoveNote(uid, noteId, notes[id].dbID)
     // Remove from local registry
@@ -72,7 +71,6 @@ var removeNote = function (notes, noteId) {
 var activateMap = function () {
     $('#main').removeClass('active');
     $('#map').removeClass('active');
-    document.getElementById('map').removeEventListener('click', activateMap);
 }
 
 /**
@@ -80,7 +78,6 @@ var activateMap = function () {
  */
 var activateSidebar = function () {
     // On narrow screens, this will close the sidebar, if the map is clicked
-    document.getElementById('map').addEventListener('click', activateMap);
     $('#main').addClass('active');
     $('#map').addClass('active');
 }
@@ -94,7 +91,7 @@ var focusNote = function (id) {
     // Set focus on the note
     $(`#${id} textarea`).focus();
     $(`#${id}`).addClass('focused');
-    setTimeout(() => { $(`#${id}`).removeClass('focused'); }, 700);
+    setTimeout(() => { $(`#${id}`).removeClass('focused'); }, 1000);
 }
 
 /**
@@ -125,7 +122,7 @@ var drawNotes = function (notes) {
     for (let n of notes) {
         $(SIDEBAR_ID).append(
             `
-            <div class="${NOTE_CLASS}" id="${n.id_}">
+            <div class="${NOTE_CLASS}" id="${n.noteId}">
                 <button type="button" class="close" aria-label="Close"
                     onclick='removeNote(NOTES, this.parentElement.id)'>
                     <span aria-hidden="true">&times;</span>
@@ -147,5 +144,7 @@ var drawNotes = function (notes) {
             resizeNote(this);
         });
     }, 100)
+
+
 
 }
