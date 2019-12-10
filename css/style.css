@@ -6,7 +6,6 @@
 
 body, html, .row {
   height: 100%;
-  overflow: hidden;
 }
 
 #nearby-count {
