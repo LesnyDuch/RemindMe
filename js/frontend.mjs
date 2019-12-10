@@ -29,7 +29,13 @@ var updateNote = function (notes, noteId, text) {
     let id = findNote(notes, noteId);
     notes[id].text = text;
     // TODO: Update database;
-    dbUpdateNote(uid, noteId, text, notes[id].dbID)
+    if (uid === null) {
+        //Update LocalStorage value
+        localStorage.setItem('NOTES', JSON.stringify(NOTES));
+    }
+    else {
+        dbUpdateNote(uid, noteId, text, notes[id].dbID);
+    }
 
 }
 
@@ -59,6 +65,8 @@ var removeNote = function (notes, noteId) {
     setTimeout(function () { document.getElementById(noteId).remove() }, 400);
     let id = findNote(notes, noteId);
     dbRemoveNote(uid, noteId, notes[id].dbID)
+    //Remove LocalStorage value
+    localStorage.removeItem('NOTES');
     // Remove from local registry
     notes.splice(findNote(notes, noteId), 1);
     // Remove the marker from the map
