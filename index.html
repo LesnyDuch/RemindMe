@@ -54,7 +54,7 @@
         var firebaseConfig = {
             //TO COPY HERE
 
-        };
+        }
 
         function initialize() {
             MAP = new RemindMap('map');
@@ -108,7 +108,6 @@
     <!-- Google Maps API -->
     <script src="https://maps.googleapis.com/maps/api/js?key=KEY&callback=initialize&libraries=places,geometry" async
         defer></script>
-
 </head>
 
 <body>
@@ -152,22 +151,22 @@
     <div id="main" class="row row-offcanvas row-offcanvas-left">
         <!-- sidebar -->
         <div class="sidebar-offcanvas" id="sidebar" role="navigation">
-            <div id="loader">
-                <!-- SOURCE: https://loading.io/css/ -->
-                <div class="lds-roller">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-            </div>
         </div>
         <!-- main area -->
         <div id="map">
+        </div>
+        <div id="loader">
+            <!-- SOURCE: https://loading.io/css/ -->
+            <div class="lds-roller">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
         </div>
         <div id="btn-center">
             <img src="./images/center.png" />
