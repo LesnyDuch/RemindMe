@@ -110,8 +110,8 @@ class RemindMap {
         //Icon image source: https://icons8.com/icons/set/note
         var markerImg = {
             url: "./images/note.png", // url
-            scaledSize: new google.maps.Size(40, 40),
-            size: new google.maps.Size(40, 40),
+            scaledSize: new google.maps.Size(35, 35),
+            size: new google.maps.Size(35, 35),
 
         }
         let marker = new google.maps.Marker({
