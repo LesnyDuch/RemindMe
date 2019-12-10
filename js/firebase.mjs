@@ -41,15 +41,8 @@ function logout() {
         alert('You have successfully logged out.');
         uid = null;
         email = null;
-        NOTES = [];
-        redrawNotes(NOTES);
-        // Clear Markers
-        for (let m in MARKERS) {
-            MARKERS[m].setMap(null);
-        }
-        MARKERS = [];
+        MAP.clearMarkers();
         initUser();
-
     }).catch((error) => { console.log(error) });
 }
 
@@ -60,12 +53,12 @@ function logout() {
  * accordingly.
  */
 function initUser() {
+
     // A user is logged in, load their notes
     if (firebase.auth().currentUser) {
         // Load user's notes
         uid = firebase.auth().currentUser.uid;
         email = firebase.auth().currentUser.email;
-        loadNotes(uid);
 
         $('#btn-add').show();
         $('#login-link').hide();
@@ -75,14 +68,13 @@ function initUser() {
         $('#logout-email').html(`Logged in as ${email}`);
 
     } else {
-        NOTES = [];
         redrawNotes(NOTES);
-        $('#btn-add').hide();
         $('#login-link').show();
         $('#logout-link').hide();
         $('#logout-email').hide();
         $('#sidebar').html('Log in to add notes!')
     }
+    loadNotes(uid);
 }
 
 /**
@@ -122,16 +114,32 @@ function dbRemoveNote(uid, noteId, dbID) {
 * Documentation: https://firebase.google.com/docs/database/web/lists-of-data
 */
 function loadNotes(uid) {
-    var userNotes = db.ref('user' + uid);
-    userNotes.once('value').then(function (snapshot) {
-        snapshot.forEach(function (childSnapshot) {
-            var data = childSnapshot.val();
-            data.dbID = childSnapshot.W.path.o[1];
-            data.location = new google.maps.LatLng(data.location.lat, data.location.lng);
-            NOTES.push(data);
+    MAP.clearMarkers();
+    if (!uid) {
+        if (!(NOTES = JSON.parse(localStorage.getItem('NOTES')))) {
+            NOTES = []
+        }
+        for (let n of NOTES) {
+            n.location = new google.maps.LatLng(n.location.lat, n.location.lng);
+        }
+        redrawNotes(NOTES);
+        for (let n of NOTES) {
+            MAP.addMarker(n.location, MAP.map, n.noteId);
+        }
+    }
+    else {
+        NOTES = [];
+        var userNotes = db.ref('user' + uid);
+        userNotes.once('value').then(function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                var data = childSnapshot.val();
+                data.dbID = childSnapshot.W.path.o[1];
+                data.location = new google.maps.LatLng(data.location.lat, data.location.lng);
+                NOTES.push(data);
+                MAP.addMarker(data.location, MAP.map, data.noteId);
+            })
             redrawNotes(NOTES);
-            MAP.addMarker(data.location, MAP.map, data.noteId);
         })
-    })
+    }
 
 }

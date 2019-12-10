@@ -39,6 +39,14 @@ class RemindMap {
         this.placesService = new google.maps.places.PlacesService(this.map);
     }
 
+    clearMarkers() {
+        // Clear Markers
+        for (let m in MARKERS) {
+            MARKERS[m].setMap(null);
+        }
+        MARKERS = [];
+    }
+
     /**
      * Using HTML5 geolocation functionality, sets the current position and centers
      * the map onto it.
@@ -162,7 +170,11 @@ class RemindMap {
                     };
                     // Push the note to the local registry
                     notes.push(newNote);
-                    newNote.dbID = dbNotePush(uid, newNote.noteId, latLng, newNote.locationTitle, newNote.text)
+                    newNote.dbID = dbNotePush(uid, newNote.noteId, latLng, newNote.locationTitle, newNote.text);
+
+                    if (uid == null) {
+                        localStorage.setItem('NOTES', JSON.stringify(NOTES));
+                    }
                     // Redraw the notes using the local registry
                     redrawNotes(notes);
                     updateNearby(notes);
@@ -176,3 +188,4 @@ class RemindMap {
             });
     }
 }
+
