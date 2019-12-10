@@ -135,6 +135,7 @@ class RemindMap {
             google.maps.event.removeListener(addListenerHandler);
             addListenerHandler = null;
             $('#btn-add').removeClass('active');
+            $('#add-message').css('z-index', '-1');
         }
 
         // Event listener is active, cancel the adding procedure
@@ -144,6 +145,7 @@ class RemindMap {
         else {
             // Changes the add button color to signal that adding is enabled
             $('#btn-add').addClass('active');
+            $('#add-message').css('z-index', '9');
             // This event listener calls addMarker() when the map is clicked.
             addListenerHandler = google.maps.event.addListener(map, 'click',
                 function (event) {
