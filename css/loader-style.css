@@ -1,11 +1,22 @@
 .lds-roller {
-  margin-left: 6vw;
-  margin-top: 40%;
   display: inline-block;
-  position: relative;
   width: 3em;
   height: 6vw;
+  position: absolute;
+  top: 40%;
+  left: 40%;
 }
+
+
+@media screen and (min-width:900px) {
+  .lds-roller {
+    left: 59vw;
+    top: 45%;
+    width: 10em;
+    height: 6vw;
+  }  
+}
+
 .lds-roller div {
   animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   transform-origin: 40px 40px;
