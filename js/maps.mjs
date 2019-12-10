@@ -130,62 +130,73 @@ class RemindMap {
         var placesService = this.placesService;
         var map = this.map;
         var updateNearby = this.onUpdateLocation;
-        // Disable the event listener in case it was activated before
-        google.maps.event.removeListener(addListenerHandler);
-        // Changes the add button color to signal that adding is enabled
-        $('#btn-add').addClass('active');
-        // This event listener calls addMarker() when the map is clicked.
-        addListenerHandler = google.maps.event.addListener(map, 'click',
-            function (event) {
-                // Request for the places API
-                let request = {
-                    'radius': 100,
-                    'location': event.latLng,
-                    'fields': ['name', 'formatted_address']
-                }
-                let latLng = {
-                    'lat': event.latLng.lat(),
-                    'lng': event.latLng.lng()
-                };
-                // This method uses Google's Place service to find the nearby places
-                placesService.nearbySearch(request, function (results, status) {
-                    let placeName;
-                    if (status == google.maps.places.PlacesServiceStatus.OK) {
-                        // Closest place's name
-                        placeName = results[0]['name'];
-                    } else if (status == 'ZERO_RESULTS') {
-                        // If no place is found set as the coordinates, reduced to 3
-                        // decimal places
-                        placeName = `${latLng.lat.toFixed(3)}, ${latLng.lng.toFixed(3)}`
-                    } else {
-                        console.log('Google Places API error');
-                        return
-                    }
 
-                    let newNote = {
-                        'noteId': uuidv4(),
+        var disableAddListener = () => {
+            google.maps.event.removeListener(addListenerHandler);
+            addListenerHandler = null;
+            $('#btn-add').removeClass('active');
+        }
+
+        // Event listener is active, cancel the adding procedure
+        if (addListenerHandler != null) {
+            disableAddListener();
+        }
+        else {
+            // Changes the add button color to signal that adding is enabled
+            $('#btn-add').addClass('active');
+            // This event listener calls addMarker() when the map is clicked.
+            addListenerHandler = google.maps.event.addListener(map, 'click',
+                function (event) {
+                    // Request for the places API
+                    let request = {
+                        'radius': 100,
                         'location': event.latLng,
-                        'locationTitle': placeName,
-                        'text': ""
-                    };
-                    // Push the note to the local registry
-                    notes.push(newNote);
-                    newNote.dbID = dbNotePush(uid, newNote.noteId, latLng, newNote.locationTitle, newNote.text);
-
-                    if (uid == null) {
-                        localStorage.setItem('NOTES', JSON.stringify(NOTES));
+                        'fields': ['name', 'formatted_address']
                     }
-                    // Redraw the notes using the local registry
-                    redrawNotes(notes);
-                    updateNearby(notes);
-                    // The add button is no longer highlighted
-                    $('#btn-add').removeClass('active');
-                    // Change focus to the new note
-                    focusNote(newNote.noteId);
-                    // Add the marker to the MAP
-                    addMarker(event.latLng, map, newNote.noteId);
+                    let latLng = {
+                        'lat': event.latLng.lat(),
+                        'lng': event.latLng.lng()
+                    };
+                    // This method uses Google's Place service to find the nearby places
+                    placesService.nearbySearch(request, function (results, status) {
+                        let placeName;
+                        if (status == google.maps.places.PlacesServiceStatus.OK) {
+                            // Closest place's name
+                            placeName = results[0]['name'];
+                        } else if (status == 'ZERO_RESULTS') {
+                            // If no place is found set as the coordinates, reduced to 3
+                            // decimal places
+                            placeName = `${latLng.lat.toFixed(3)}, ${latLng.lng.toFixed(3)}`
+                        } else {
+                            console.log('Google Places API error');
+                            return
+                        }
+
+                        let newNote = {
+                            'noteId': uuidv4(),
+                            'location': event.latLng,
+                            'locationTitle': placeName,
+                            'text': ""
+                        };
+                        // Push the note to the local registry
+                        notes.push(newNote);
+                        newNote.dbID = dbNotePush(uid, newNote.noteId, latLng, newNote.locationTitle, newNote.text);
+
+                        if (uid == null) {
+                            localStorage.setItem('NOTES', JSON.stringify(NOTES));
+                        }
+                        // Redraw the notes using the local registry
+                        redrawNotes(notes);
+                        updateNearby(notes);
+                        // The add button is no longer highlighted and the event listener disabled
+                        disableAddListener();
+                        // Change focus to the new note
+                        focusNote(newNote.noteId);
+                        // Add the marker to the MAP
+                        addMarker(event.latLng, map, newNote.noteId);
+                    });
                 });
-            });
+        }
     }
 }
 
