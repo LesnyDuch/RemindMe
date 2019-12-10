@@ -106,10 +106,20 @@ class RemindMap {
     addMarker(location, map, id) {
         // Add the marker at the clicked location, and add the next-available label
         // from the array of alphabetical characters.
+
+        //Icon image source: https://icons8.com/icons/set/note
+        var markerImg = {
+            url: "./images/note.png", // url
+            scaledSize: new google.maps.Size(40, 40),
+            size: new google.maps.Size(40, 40),
+
+        }
         let marker = new google.maps.Marker({
             position: location,
             map: map,
-            animation: google.maps.Animation.DROP
+            animation: google.maps.Animation.DROP,
+            icon: markerImg
+
         });
         google.maps.event.addListener(marker, 'click', () => { focusNote(id) });
         // Add marker to a dictionary, so it can be removed if necessary
