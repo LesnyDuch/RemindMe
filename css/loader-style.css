@@ -7,6 +7,9 @@
   left: 40%;
 }
 
+#login-btn {
+  border-radius: 50%;
+}
 
 @media screen and (min-width:900px) {
   .lds-roller {

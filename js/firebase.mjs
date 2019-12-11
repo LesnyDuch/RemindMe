@@ -59,15 +59,15 @@ function initUser() {
         // Load user's notes
         uid = firebase.auth().currentUser.uid;
         email = firebase.auth().currentUser.email;
-
+        $('#login-btn').attr("src", firebase.auth().currentUser.photoURL);
         $('#btn-add').show();
         $('#login-link').hide();
         $('#logout-link').show();
-        console.log($('#logout-link'));
         $('#logout-email').show();
         $('#logout-email').html(`Logged in as ${email}`);
 
     } else {
+        $('#login-btn').attr("src", "images/avatar.png");
         redrawNotes(NOTES);
         $('#login-link').show();
         $('#logout-link').hide();
